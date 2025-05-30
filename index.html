@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="logo.jpg">
+    <title>Aayush Basnet | MERN Full Stack Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevent horizontal scrollbars if animations cause temporary overflow */
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-card:hover::before {
+            opacity: 1;
+        }
+        
+        .project-content {
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:hover .project-content {
+            transform: translateY(0);
+        }
+
+        /* Marquee styles */
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); } /* Essential for seamless loop with duplicated content */
+        }
+        .animate-marquee {
+          animation: marquee linear infinite; /* Duration will be set inline or via specific classes */
+        }
+        .marquee-paused-on-hover:hover {
+          animation-play-state: paused;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem; /* py-2 px-4 */
+            margin: 0.25rem 0.5rem; /* my-1 mx-2 - adjusted for slightly less vertical margin if gap is used */
+            background-color: #ede9fe; /* violet-100 */
+            color: #7c3aed; /* violet-600 */
+            border-radius: 9999px; /* rounded-full */
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease-in-out;
+        }
+        .skill-tag:hover {
+            background-color: #c4b5fd; /* violet-300 */
+            color: #5b21b6; /* violet-700 */
+            transform: translateY(-2px);
+        }
+
+        /* Scroll Animation Styles */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px); /* Start 30px down */
+            transition: opacity 0.6s cubic-bezier(0.645, 0.045, 0.355, 1), 
+                        transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+            will-change: opacity, transform; /* Hint for performance */
+        }
+        .scroll-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="text-xl font-bold gradient-text">Aayush Basnet</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">Home</a>
+                    <a href="#about" class="nav-link text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">About</a>
+                    <a href="#skills" class="nav-link text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">Skills</a>
+                    <a href="#projects" class="nav-link text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">Projects</a>
+                    <a href="#contact" class="nav-link text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">Contact</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="menu-btn" class="text-gray-500 hover:text-gray-900 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</a>
+                <a href="#about" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">About</a>
+                <a href="#skills" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Skills</a>
+                <a href="#projects" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Projects</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <!-- Image Div (Now on the left for md screens and up) -->
+                <div class="md:w-1/2 flex justify-center mb-10 md:mb-0 md:pr-8 scroll-animate">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full blur-xl opacity-30 animate-pulse"></div>
+                        <img src="img.jpg" 
+                             alt="Aayush Basnet" 
+                             class="relative w-full h-full object-cover rounded-full border-4 border-white shadow-lg animate-float">
+                    </div>
+                </div>
+                <!-- Text Div (Now on the right for md screens and up) -->
+                <div class="md:w-1/2 text-center md:text-left md:pl-8">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 scroll-animate" data-stagger-delay="0s">
+                        Hi, I'm <span class="gradient-text">Aayush Basnet</span>
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl text-gray-600 mb-6 scroll-animate" data-stagger-delay="0.1s">
+                        MERN Stack Developer
+                    </h2>
+                    <p class="text-gray-600 mb-8 max-w-lg mx-auto md:mx-0 scroll-animate" data-stagger-delay="0.2s">
+                        I build exceptional digital experiences with modern web technologies. Based in Biratnagar, Nepal, I specialize in creating full-stack applications with MongoDB, Express.js, React.js, and Node.js.
+                    </p>
+                    <div class="flex space-x-4 justify-center md:justify-start scroll-animate" data-stagger-delay="0.3s">
+                        <a href="#contact" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300">
+                            Contact Me
+                        </a>
+                        <a href="#projects" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-100 transition-all duration-300">
+                            View Work
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">About <span class="gradient-text">Me</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto"></div>
+            </div>
+            
+            <div class="w-full">
+                <h3 class="text-2xl font-semibold mb-4 text-center scroll-animate">Who am I?</h3>
+                <p class="text-gray-600 mb-6 text-center md:text-left max-w-3xl mx-auto scroll-animate" data-stagger-delay="0.1s">
+                    I'm Aayush Basnet, a passionate Full Stack Developer from Biratnagar, Nepal specializing in the MERN stack. With a strong foundation in computer science and years of hands-on experience, I create robust, scalable, and user-friendly web applications.
+                </p>
+                <p class="text-gray-600 mb-6 text-center md:text-left max-w-3xl mx-auto scroll-animate" data-stagger-delay="0.2s">
+                    My journey in web development started when I was fascinated by how technology can solve real-world problems. Since then, I've dedicated myself to mastering modern web technologies and delivering high-quality solutions.
+                </p>
+               
+                <!-- <div class="flex flex-wrap gap-4 justify-center">
+                    <a href="#" class="px-6 py-3 bg-blue-500 text-white rounded-full font-medium hover:bg-blue-600 transition-all duration-300 flex items-center">
+                        <i class="fas fa-download mr-2"></i> Download CV
+                    </a> -->
+                  
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 scroll-animate">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">My <span class="gradient-text">Skills</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto"></div>
+            </div>
+            
+            <div class="space-y-12">
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-center md:text-left scroll-animate">Technical Skills</h3>
+                    <div class="w-full py-3 scroll-animate" data-stagger-delay="0.1s">
+                        <div class="flex flex-wrap justify-center md:justify-start gap-y-3">
+                            <span class="skill-tag">MongoDB</span>
+                            <span class="skill-tag">Express.js</span>
+                            <span class="skill-tag">React.js</span>
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">JavaScript (ES6+)</span>
+                            <span class="skill-tag">TypeScript</span>
+                            <span class="skill-tag">Redux Toolkit</span>
+                            <span class="skill-tag">Next.js</span>
+                            <span class="skill-tag">HTML5</span>
+                            <span class="skill-tag">CSS3</span>
+                            <span class="skill-tag">Tailwind CSS</span>
+                            <span class="skill-tag">Git & GitHub</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-center md:text-left scroll-animate" data-stagger-delay="0.2s">Professional Skills</h3>
+                    <div class="w-full py-3 scroll-animate" data-stagger-delay="0.3s">
+                        <div class="flex flex-wrap justify-center md:justify-start gap-y-3">
+                            <span class="skill-tag">Problem Solving</span>
+                            <span class="skill-tag">Teamwork & Collaboration</span>
+                            <span class="skill-tag">Communication</span>
+                            <span class="skill-tag">Project Management</span>
+                            <span class="skill-tag">Creativity</span>
+                            <span class="skill-tag">Adaptability</span>
+                            <span class="skill-tag">Attention to Detail</span>
+                            <span class="skill-tag">Agile Methodologies</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 scroll-animate" data-stagger-delay="0.4s">
+                <h3 class="text-xl font-semibold mb-8 text-center">Technologies I Work With</h3>
+                <div class="w-full overflow-hidden py-4">
+                    <!-- CHANGE MARQUEE SPEED HERE: Lower the '40s' value to make it faster (e.g., 20s) -->
+                    <div class="flex whitespace-nowrap animate-marquee marquee-paused-on-hover" style="animation-duration: 15s;">
+                        <!-- Icons Set 1 -->
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="MongoDB">
+                            <img src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg" alt="MongoDB" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Express.js">
+                            <img src="https://cdn.worldvectorlogo.com/logos/express-109.svg" alt="Express.js" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="React.js">
+                            <img src="https://cdn.worldvectorlogo.com/logos/react-2.svg" alt="React.js" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Node.js">
+                            <img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" alt="Node.js" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="JavaScript">
+                            <img src="https://cdn.worldvectorlogo.com/logos/javascript-1.svg" alt="JavaScript" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="TypeScript">
+                            <img src="https://cdn.worldvectorlogo.com/logos/typescript.svg" alt="TypeScript" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Redux">
+                            <img src="https://cdn.worldvectorlogo.com/logos/redux.svg" alt="Redux" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Git">
+                            <img src="https://cdn.worldvectorlogo.com/logos/git-icon.svg" alt="Git" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Tailwind CSS">
+                            <img src="https://cdn.worldvectorlogo.com/logos/tailwindcss.svg" alt="Tailwind CSS" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Docker">
+                            <img src="https://cdn.worldvectorlogo.com/logos/docker.svg" alt="Docker" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Next.js">
+                            <img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="Next.js" class="w-10 h-10 object-contain">
+                        </div>
+                         <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Firebase">
+                            <img src="https://cdn.worldvectorlogo.com/logos/firebase-1.svg" alt="Firebase" class="w-full h-full object-contain">
+                        </div>
+                        <!-- Icons Set 2 (Duplicate for seamless loop) -->
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="MongoDB">
+                            <img src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg" alt="MongoDB" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Express.js">
+                            <img src="https://cdn.worldvectorlogo.com/logos/express-109.svg" alt="Express.js" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="React.js">
+                            <img src="https://cdn.worldvectorlogo.com/logos/react-2.svg" alt="React.js" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Node.js">
+                            <img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" alt="Node.js" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="JavaScript">
+                            <img src="https://cdn.worldvectorlogo.com/logos/javascript-1.svg" alt="JavaScript" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="TypeScript">
+                            <img src="https://cdn.worldvectorlogo.com/logos/typescript.svg" alt="TypeScript" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Redux">
+                            <img src="https://cdn.worldvectorlogo.com/logos/redux.svg" alt="Redux" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Git">
+                            <img src="https://cdn.worldvectorlogo.com/logos/git-icon.svg" alt="Git" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Tailwind CSS">
+                            <img src="https://cdn.worldvectorlogo.com/logos/tailwindcss.svg" alt="Tailwind CSS" class="w-full h-full object-contain">
+                        </div>
+                        <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Docker">
+                            <img src="https://cdn.worldvectorlogo.com/logos/docker.svg" alt="Docker" class="w-full h-full object-contain">
+                        </div>
+                         <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Next.js">
+                            <img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="Next.js" class="w-10 h-10 object-contain">
+                        </div>
+                         <div class="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center p-2 mx-3 flex-shrink-0 card-hover" title="Firebase">
+                            <img src="https://cdn.worldvectorlogo.com/logos/firebase-1.svg" alt="Firebase" class="w-full h-full object-contain">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">My <span class="gradient-text">Projects</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg project-card h-64 scroll-animate">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="E-commerce Platform" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 project-content">
+                        <h3 class="text-white text-xl font-bold mb-2">E-commerce Platform</h3>
+                        <p class="text-gray-200 mb-4 text-sm">Full-featured online store with payment integration, user authentication, and admin dashboard.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-blue-500 bg-opacity-30 text-blue-100 text-xs rounded">React</span>
+                            <span class="px-2 py-1 bg-purple-500 bg-opacity-30 text-purple-100 text-xs rounded">Node.js</span>
+                            <span class="px-2 py-1 bg-green-500 bg-opacity-30 text-green-100 text-xs rounded">MongoDB</span>
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="Live Demo">
+                                <i class="fas fa-link"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="GitHub Repository">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg project-card h-64 scroll-animate">
+                    <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="Task Management App" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 project-content">
+                        <h3 class="text-white text-xl font-bold mb-2">Task Management App</h3>
+                        <p class="text-gray-200 mb-4 text-sm">Collaborative task management system with real-time updates, drag & drop, and team features.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-blue-500 bg-opacity-30 text-blue-100 text-xs rounded">React</span>
+                            <span class="px-2 py-1 bg-red-500 bg-opacity-30 text-red-100 text-xs rounded">Firebase</span>
+                            <span class="px-2 py-1 bg-yellow-500 bg-opacity-30 text-yellow-100 text-xs rounded">Redux</span>
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="Live Demo">
+                                <i class="fas fa-link"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="GitHub Repository">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg project-card h-64 scroll-animate">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="Social Media Dashboard" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 project-content">
+                        <h3 class="text-white text-xl font-bold mb-2">Social Media Dashboard</h3>
+                        <p class="text-gray-200 mb-4 text-sm">Analytics dashboard for social media managers with data visualization and reporting tools.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-blue-500 bg-opacity-30 text-blue-100 text-xs rounded">React</span>
+                            <span class="px-2 py-1 bg-purple-500 bg-opacity-30 text-purple-100 text-xs rounded">Express</span>
+                            <span class="px-2 py-1 bg-green-500 bg-opacity-30 text-green-100 text-xs rounded">MongoDB</span>
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="Live Demo">
+                                <i class="fas fa-link"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="GitHub Repository">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg project-card h-64 scroll-animate">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="Blog Platform" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 project-content">
+                        <h3 class="text-white text-xl font-bold mb-2">Blog Platform</h3>
+                        <p class="text-gray-200 mb-4 text-sm">Modern blogging platform with rich text editor, SEO optimization, and comment system.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-blue-500 bg-opacity-30 text-blue-100 text-xs rounded">Next.js</span>
+                            <span class="px-2 py-1 bg-gray-500 bg-opacity-30 text-gray-100 text-xs rounded">GraphQL</span>
+                            <span class="px-2 py-1 bg-green-500 bg-opacity-30 text-green-100 text-xs rounded">PostgreSQL</span>
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="Live Demo">
+                                <i class="fas fa-link"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="GitHub Repository">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg project-card h-64 scroll-animate">
+                    <img src="https://images.unsplash.com/photo-1555421689-3f034debb7a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="Recipe Finder" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 project-content">
+                        <h3 class="text-white text-xl font-bold mb-2">Recipe Finder</h3>
+                        <p class="text-gray-200 mb-4 text-sm">Interactive recipe application with search, filtering, and personalized recommendations.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-blue-500 bg-opacity-30 text-blue-100 text-xs rounded">React</span>
+                            <span class="px-2 py-1 bg-yellow-500 bg-opacity-30 text-yellow-100 text-xs rounded">TypeScript</span>
+                            <span class="px-2 py-1 bg-red-500 bg-opacity-30 text-red-100 text-xs rounded">Firebase</span>
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="Live Demo">
+                                <i class="fas fa-link"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="GitHub Repository">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="relative rounded-xl overflow-hidden shadow-lg project-card h-64 scroll-animate">
+                    <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="Portfolio Website" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 project-content">
+                        <h3 class="text-white text-xl font-bold mb-2">Portfolio Website</h3>
+                        <p class="text-gray-200 mb-4 text-sm">Custom portfolio website with animations, contact form, and project showcase.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-blue-500 bg-opacity-30 text-blue-100 text-xs rounded">HTML/CSS</span>
+                            <span class="px-2 py-1 bg-indigo-500 bg-opacity-30 text-indigo-100 text-xs rounded">JavaScript</span>
+                            <span class="px-2 py-1 bg-teal-500 bg-opacity-30 text-teal-100 text-xs rounded">Tailwind CSS</span>
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="Live Demo">
+                                <i class="fas fa-link"></i>
+                            </a>
+                            <a href="#" class="text-white hover:text-blue-200 transition-colors" aria-label="GitHub Repository">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 scroll-animate">
+                <a href="#" class="inline-block px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300">
+                    View All Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Get In <span class="gradient-text">Touch</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto"></div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="md:w-1/2 scroll-animate">
+                    <h3 class="text-2xl font-semibold mb-6">Contact Information</h3>
+                    <p class="text-gray-600 mb-8">
+                        Feel free to reach out to me for any questions or opportunities. I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-blue-100 p-3 rounded-full text-blue-500">
+                                <i class="fas fa-map-marker-alt text-lg"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium text-gray-800">Location</h4>
+                                <p class="text-gray-600">Biratnagar, Nepal</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-purple-100 p-3 rounded-full text-purple-500">
+                                <i class="fas fa-envelope text-lg"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium text-gray-800">Email</h4>
+                                <p class="text-gray-600">aayushb963@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-green-100 p-3 rounded-full text-green-500">
+                                <i class="fas fa-phone-alt text-lg"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium text-gray-800">Phone</h4>
+                                <p class="text-gray-600">+977 9862435374</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h4 class="font-medium text-gray-800 mb-4">Follow Me</h4>
+                        <div class="flex space-x-4">
+                            <a href="https://www.facebook.com/aayush.basnet.4458" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-500 hover:text-white transition-all duration-300" aria-label="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://x.com/BASNETKAZI66155" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-400 hover:text-white transition-all duration-300" aria-label="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.instagram.com/aayush___basnet/" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:text-white transition-all duration-300" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/aayush-basnet-95632a2b2/" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-700 hover:text-white transition-all duration-300" aria-label="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://github.com/kazinovin007" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-800 hover:text-white transition-all duration-300" aria-label="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 scroll-animate">
+                    <form id="contactForm" action="https://formspree.io/f/mwpogepn" method="POST" class="bg-white p-8 rounded-xl shadow-md">
+                        <div class="mb-6">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Your Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Your Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter subject" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Your Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your message" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center">
+                            Send Message
+                        </button>
+                    </form>
+                    <div id="form-message" class="mt-4"></div> <!-- For success/error messages -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <a href="#" class="text-xl font-bold gradient-text">Aayush Basnet</a>
+                    <p class="mt-2 text-gray-400">MERN Full Stack Developer</p>
+                </div>
+                
+                <div class="flex flex-col items-center md:items-end">
+                    <p class="text-gray-400 mb-4">© <span id="currentYear"></span> Aayush Basnet. All rights reserved.</p>
+                    <div class="flex space-x-6">
+                        <a href="https://www.facebook.com/aayush.basnet.4458" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://x.com/BASNETKAZI66155" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.instagram.com/aayush___basnet/" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/aayush-basnet-95632a2b2/" class="text-gray-400 hover:text-white transition-colors" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/kazinovin007" class="text-gray-400 hover:text-white transition-colors" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 opacity-0 invisible z-40" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuBtn.setAttribute('aria-expanded', mobileMenu.classList.contains('hidden') ? 'false' : 'true');
+            });
+        }
+        
+        // Close mobile menu when clicking a link
+        const mobileLinks = document.querySelectorAll('#mobile-menu a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (mobileMenu) {
+                    mobileMenu.classList.add('hidden');
+                    if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+        
+        // Back to top button
+        const backToTopBtn = document.getElementById('back-to-top');
+        
+        if (backToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                // Only prevent default for internal links
+                if (href.startsWith('#') && href !== '#') { 
+                    e.preventDefault();
+                    const targetId = href;
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        const offsetPosition = targetElement.offsetTop - 70; // Adjusted for fixed navbar
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Contact Form Submission
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('form-message');
+
+        if (contactForm && formMessage) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+                formMessage.innerHTML = ''; // Clear previous messages
+
+                fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        formMessage.innerHTML = `
+                            <div class="p-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
+                                <span class="font-medium">Success!</span> Your message has been sent. I'll get back to you soon.
+                            </div>`;
+                        contactForm.reset();
+                        setTimeout(() => {
+                           if (formMessage.querySelector('.bg-green-100')) {
+                                formMessage.innerHTML = '';
+                           }
+                        }, 7000); // Clear success message after 7 seconds
+                    } else {
+                        response.json().then(data => {
+                            const errors = data.errors ? data.errors.map(err => err.message).join(', ') : 'Unknown error. Please check your input.';
+                            formMessage.innerHTML = `
+                                <div class="p-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                                    <span class="font-medium">Error!</span> ${errors}
+                                </div>`;
+                        }).catch(() => {
+                             formMessage.innerHTML = `
+                                <div class="p-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                                    <span class="font-medium">Error!</span> Oops! There was a problem submitting your form. Please try again.
+                                </div>`;
+                        });
+                    }
+                }).catch(error => {
+                    formMessage.innerHTML = `
+                        <div class="p-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                            <span class="font-medium">Error!</span> Oops! A network error occurred: ${error}. Please try again.
+                        </div>`;
+                }).finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonText;
+                });
+            });
+        }
+
+        // Set current year in footer
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+
+        // Scroll-based animations using Intersection Observer
+        const animatedElements = document.querySelectorAll('.scroll-animate');
+
+        if (animatedElements.length > 0) {
+            const observerOptions = {
+                root: null,        // observing intersections with the viewport
+                rootMargin: '0px', // no margin around the viewport
+                threshold: 0.1     // trigger when 10% of the element is visible
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Apply stagger delay if specified on the element via data attribute
+                        const delay = entry.target.dataset.staggerDelay;
+                        if (delay) {
+                            entry.target.style.transitionDelay = delay;
+                        }
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            };
+
+            const scrollObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+            animatedElements.forEach(el => {
+                scrollObserver.observe(el);
+            });
+        }
+
+    </script>
+</body>
+</html>
